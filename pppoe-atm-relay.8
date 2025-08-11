@@ -1,0 +1,81 @@
+.TH PPPOE-ATM-RELAY 8 "August 2025" "version 1.0" "User Manuals"
+
+.SH NAME
+pppoe-atm-relay \- relay between PPPoA and PPPoE protocols
+
+.SH SYNOPSIS
+.B pppoe-atm-relay
+[\fIoptions\fR]
+
+.SH DESCRIPTION
+pppoe-atm-relay is a PPP packet relay between Ethernet and ATM interfaces. It enables a completely transparent connection of PPPoE clients (e.g., routers, servers, computers) with ATM interfaces (ADSL, VDSL, DOCSIS technologies, as well as pure ATM network cards).
+
+.br
+This is not Ethernet over ATM — PPPoE frames are decapsulated into individual PPP packets and transmitted via the ATM interface and vice versa.
+
+.SH INSTALLATION
+Build the pppoe-atm-relay using \fBcmake\fR and create a service using your system's init solution (e.g., systemd, init.d).
+
+.br
+By setting the \fBAC_NAME\fR parameter in cmake or while compiling directly, you can change the AC Name presented to clients (default: "pppoe-atm-relay").
+
+.br
+pppoe-atm-relay requires a kernel with PPPoA and PPPoE support (CONFIG_PPPOE, CONFIG_PPPOATM) and at least kernel version 5.11, as it uses the PPPIOCBRIDGECHAN functionality (or backported commit from 5.11).
+
+.SH OPTIONS
+.TP
+\fB-h\fR
+Show help
+
+.TP
+\fB-v\fR
+Show version
+
+.TP
+\fB-i\fR
+Ethernet device to listen on (default: eth0)
+
+.TP
+\fB-f\fR
+Run in foreground
+
+.SH USAGE
+pppoe-atm-relay can run in foreground or background. Logs are sent to syslog, except for critical startup messages.
+
+.SH CONNECTING WITH A CLIENT
+PPPoE clients typically cannot set ATM interface parameters, so pppoe-atm-relay uses the Service-Name tag to specify the ATM interface path, channel, and encapsulation.
+.br
+
+The Service-Name tag format:
+.IP
+\fI<ATM interface>.<VPI>.<VCI>,<Encapsulation>\fR
+
+where \fI<Encapsulation>\fR can be:
+.RS
+0 \- auto-detection
+.br
+1 \- VC-MUX
+.br
+2 \- LLC
+.RE
+
+Example: “0.0.35,2” means ATM interface 0, VPI=0, VCI=35, LLC encapsulation.
+
+.br
+pppoe-atm-relay supports RFC 4638, allowing a larger MRU than 1492. The Ethernet interface must have an increased MTU accordingly.
+
+.br
+Other PPP parameters like login or password are irrelevant; PPP packets are transparently forwarded.
+
+.SH SEE ALSO
+cmake(1)
+
+.SH AUTHOR
+Pieszka
+
+.SH COPYRIGHT
+Copyright \(co 2025 Pieszka
+.br
+.SH LICENSE
+pppoe-atm-relay is licensed under the MIT-x11 license.
+
