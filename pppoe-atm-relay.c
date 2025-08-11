@@ -605,6 +605,13 @@ void processPADI(struct Interface interface, uint8_t* packet, size_t len)
         return;
     }
 
+    /* Check if we still got space for more sessions */
+    if (sessionCount >= MAX_SESSIONS)
+    {
+        syslog(LOG_ERR, "Too many sessions established");
+        return;
+    }
+
     /* Ok, we are good to go. Let's construct a PADO packet
      * We need to send back Service Name, Relay ID and Host Uniq if they exist
      */
