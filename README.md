@@ -4,12 +4,14 @@ pppoe-atm-relay is a PPP packet relay between Ethernet and ATM interfaces. It en
 
 # Installation
 
-Build the pppoe-atm-relay using `cmake` and create a service using the solution used on your machine (e.g. systemd, init.d).
-pppoe-atm-relay requires a kernel with PPPoA and PPPoE support (`CONFIG_PPPOE`, `CONFIG_PPPOATM`).
+Build the pppoe-atm-relay using `make` command (or `cmake` if you wish) and create a service using the solution used on your machine (e.g. systemd, init.d)
 
-By setting the `AC_NAME` parameter in cmake or compiling directly with the compiler, you can change the AC Name that pppoe-atm-relay presents to clients from the default `pppoe-atm-relay`.
+By setting the `AC_NAME` parameter in make/cmake, you can change the AC Name that pppoe-atm-relay presents to clients, from the default `pppoe-atm-relay`.
+
+You need to have enabled `CONFIG_PPPOE` and `CONFIG_PPPOATM` in your kernel to succesfully build this application.  
 
 **pppoe-atm-relay requires at least kernel version 5.11**, as it uses the PPPIOCBRIDGECHAN functionality. However, when building your own embedded system, you are probably able to backport the relevant [commit](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4cf476ced45d7f12df30a68e833b263e7a2202d1) (SHA: 4cf476ced45d7f12df30a68e833b263e7a2202d1) and all patches released after it (of course).
+
 Alternatively, you could modify pppoe-atm-relay to manually transfer data between PPP channels, but this would slow down the relay's performance.
 
 `However, I encourage you to build your embedded systems with the latest kernel versions possible.`

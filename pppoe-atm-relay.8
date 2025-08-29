@@ -14,10 +14,10 @@ pppoe-atm-relay is a PPP packet relay between Ethernet and ATM interfaces. It en
 This is not Ethernet over ATM — PPPoE frames are decapsulated into individual PPP packets and transmitted via the ATM interface and vice versa.
 
 .SH INSTALLATION
-Build the pppoe-atm-relay using \fBcmake\fR and create a service using your system's init solution (e.g., systemd, init.d).
+Build the pppoe-atm-relay using \fBmake\fR (or \fBcmake\fR if you wish) and create a service using your system's init solution (e.g., systemd, init.d).
 
 .br
-By setting the \fBAC_NAME\fR parameter in cmake or while compiling directly, you can change the AC Name presented to clients (default: "pppoe-atm-relay").
+By setting the \fBAC_NAME\fR parameter in make/cmake, you can change the AC Name presented to clients (default: "pppoe-atm-relay").
 
 .br
 pppoe-atm-relay requires a kernel with PPPoA and PPPoE support (CONFIG_PPPOE, CONFIG_PPPOATM) and at least kernel version 5.11, as it uses the PPPIOCBRIDGECHAN functionality (or backported commit from 5.11).
