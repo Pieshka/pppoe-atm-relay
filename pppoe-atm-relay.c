@@ -249,7 +249,11 @@ void daemonizeProcess()
         exit(EXIT_SUCCESS);
 
     /* Chroot working directory */
-    chdir("/");
+    if (chdir("/") != 0)
+    {
+        perror("chdir");
+        exit(EXIT_FAILURE);
+    }
 
     /* Close standard descriptors */
     close(STDIN_FILENO);
@@ -338,8 +342,6 @@ int openPPPoASocket(uint8_t atmIf, uint8_t atmVpi, uint16_t atmVci, uint8_t enca
         .sap_addr.vpi = atmVpi,
         .sap_addr.vci = atmVci
     };
-    struct stat devstat;
-    devstat.st_mode = S_IFSOCK;
 
     /* Open ATM PVC socket */
     fd = socket(AF_ATMPVC, SOCK_DGRAM, 0);
